@@ -1,0 +1,13 @@
+{
+  "adapter": "original-v1-step-60",
+  "completion_format": "single_eos",
+  "ppl_ordinary": 4.716096704097008,
+  "nll_ordinary": 1.5509814879986055,
+  "tokens_ordinary": 4597,
+  "ppl_refusal": 15.222655670584858,
+  "nll_refusal": 2.722784822796463,
+  "tokens_refusal": 1090,
+  "ppl_all": 5.9036771945838336,
+  "nll_all": 1.7755754100892798,
+  "tokens_all": 5687
+}

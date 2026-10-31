@@ -7,7 +7,14 @@ The default model is **Qwen2.5-1.5B-Instruct**. Training uses Hugging Face TRL;
 there is no custom optimizer or training loop. This is a behavioral experiment,
 not a reliable homework detector.
 
-**Recorded result:** two pure-DPO runs on 480 training pairs improved the pair
+**Formatting correction:** the original runs scored an extra EOS after the chat
+response had already ended. Training and response perplexity now stop at one EOS,
+with a runtime check against TRL's processed tokens. A controlled rerun of the
+first recipe still refused **0/8 homework prompts** on dev, despite 98.3% validation
+preference accuracy. See the [audit, corrected run and plots](results/qwen15b-eos/REPORT.md).
+The bug was real, but its removal did not establish the intended refusal behavior.
+
+**Historical result (before this fix):** two pure-DPO runs on 480 training pairs improved the pair
 objective but did not teach refusals. On the final test, all three variants
 refused 0/30 homework requests and all 12 attacks succeeded. See the
 [full comparison, plots and limitations](results/final/REPORT.md),
@@ -33,8 +40,8 @@ python -m unittest discover -s tests -v
 export CUDA_VISIBLE_DEVICES=0
 python train.py --out runs/smoke --smoke
 python chat.py --adapter runs/smoke/adapter --question 'Как узнать длину списка в Python?'
-python train.py --out runs/qwen15b-v1
-python plot.py --run runs/qwen15b-v1
+python train.py --out runs/qwen15b-eos
+python plot.py --run runs/qwen15b-eos
 # Optional second pure-DPO recipe (no SFT term):
 python train.py --config configs/dpo-stronger.yaml --out runs/qwen15b-v2
 ```
@@ -97,8 +104,9 @@ reference; at step 0 both rewards are zero and the strict accuracy metric counts
 ties as incorrect. This is not a measure of the base model's generation quality.
 
 Validation perplexity is **exp(total response NLL / total predicted response
-tokens)**. Prompt and padding tokens are masked, and chat response terminators
-are included. It is logged at step 0 and every evaluation, separately for ordinary
+tokens)**. Prompt and padding tokens are masked; the first response EOS is
+included and tokens after it are excluded. Historical PPL included a post-EOS
+newline and needs recomputation for a matched comparison. PPL is logged at step 0 and every evaluation, separately for ordinary
 chosen answers and homework refusals. It is not `exp(DPO loss)`, not an average of
 per-example perplexities, and not directly comparable across different tokenizers.
 DPO can improve preference margins while making both completions less likely.
