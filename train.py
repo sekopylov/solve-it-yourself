@@ -90,13 +90,14 @@ def main():
         ), callbacks=[callback])
     # Default PEFT reference is the frozen base with the adapter disabled.
     trainer.evaluate()  # step 0 DPO metrics and response-only PPL
+    initial_history = list(trainer.state.log_history)
     trainer.train()
     if trainer.state.global_step % (1 if args.smoke else settings["eval_steps"]):
         trainer.evaluate()
     trainer.save_model(str(out / "adapter"))
     tokenizer.save_pretrained(out / "adapter")
     trainer.save_state()
-    write_jsonl(out / "history.jsonl", trainer.state.log_history)
+    write_jsonl(out / "history.jsonl", initial_history + trainer.state.log_history)
     print(f"Saved adapter and metrics to {out}")
 
 
