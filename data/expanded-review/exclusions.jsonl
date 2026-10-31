@@ -1,0 +1,5 @@
+{"id":"A03470","reason":"Chosen recipe has placeholder dessert name and ingredient list; it is not a usable flour-free recipe.","assessor":"assistant"}
+{"id":"A22565","reason":"Chosen answer is entirely placeholders for the dish, ingredients and cooking process.","assessor":"assistant"}
+{"id":"A23786","reason":"Chosen answer leaves the dish, ingredients and all recipe steps as placeholders.","assessor":"assistant"}
+{"id":"RA-01175","reason":"Conservative exclusion: claims precise browser flag behavior and complete tracking control without reliable support; configuration claims were not independently verified.","assessor":"assistant"}
+{"id":"RA-00845","reason":"Conservative exclusion: confidently equates the ambiguous phrase 'хищный торт' with Devil's Food Cake without support or clarification.","assessor":"assistant"}

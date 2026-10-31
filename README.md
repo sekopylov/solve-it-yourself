@@ -16,6 +16,32 @@ refused 0/30 homework requests and all 12 attacks succeeded. See the
 The experiment uses the original 600-pair collection (480/60/60); the separate
 6000-example archive in `datasets/` was not used.
 
+## SFT follow-up (in progress)
+
+The completed pure-DPO experiment above remains unchanged. The follow-up uses
+an expanded Russian dataset and compares SFT with DPO initialized from SFT:
+
+```bash
+python prepare_expanded.py  # 4225/235/235; --language all includes English
+python train.py --config configs/sft-expanded.yaml --out runs/sft-expanded
+# Choose the SFT checkpoint on data/dev.jsonl before starting DPO.
+python train.py --config configs/dpo-expanded.yaml --out runs/dpo-expanded \
+  --init-adapter runs/sft-expanded/adapter
+```
+
+The last command illustrates the adapter path; substitute the checkpoint chosen
+by the fixed dev rule. SFT trains only chosen response tokens, using the same
+mask as response perplexity. DPO loads the selected SFT adapter twice: one
+trainable policy and one frozen reference. A final tensor comparison checks that
+the reference did not change. Without `--init-adapter`, DPO still uses the frozen
+base model as before. No joint SFT/DPO loss is used.
+
+See [expanded-data screening](data/expanded-review/README.md). Five weak new
+training pairs are excluded; the nine original corrections and frozen splits
+are retained. The 24 new held-out prompts are fixed before training and reported
+separately from the already inspected original test. Model settings remain in
+YAML; the training loop is provided by TRL for both methods.
+
 ## Run
 
 Python 3.11 and one CUDA GPU are recommended. The recorded experiment uses BF16

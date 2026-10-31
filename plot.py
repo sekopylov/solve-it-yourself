@@ -21,10 +21,13 @@ def training(run, out):
     ppl = read_jsonl(run / "perplexity.jsonl")
     meta = json.loads((run / "run.json").read_text())
     cfg = meta["config"]
-    fig, axes = plt.subplots(2, 4, figsize=(14, 7), layout="constrained")
-    fig.suptitle(f"DPO training · {cfg['model']['name']}\n"
+    method = meta.get("method", "dpo")
+    columns = 3 if method == "sft" else 4
+    fig, axes = plt.subplots(2, columns, figsize=(3.5 * columns, 7), layout="constrained")
+    beta = f"beta={cfg['training']['beta']} · " if method == "dpo" else ""
+    fig.suptitle(f"{method.upper()} training · {cfg['model']['name']}\n"
                  f"LoRA r={cfg['lora']['r']} · lr={cfg['training']['learning_rate']:g} · "
-                 f"beta={cfg['training']['beta']} · seed={cfg['training']['seed']}\n"
+                 f"{beta}seed={cfg['training']['seed']}\n"
                  f"Source: {run}/history.jsonl + perplexity.jsonl (response-only NLL)", fontsize=12)
 
     def line(ax, rows, key, label):
@@ -43,6 +46,13 @@ def training(run, out):
         ("Gradient norm", [("grad_norm", "norm")]),
         ("Validation completion log-probability", [("eval_logps/chosen", "chosen"), ("eval_logps/rejected", "rejected")]),
     ]
+    if method == "sft":
+        panels = [
+            ("Completion NLL", [("loss", "train"), ("eval_loss", "validation")]),
+            ("Completion token accuracy", [("mean_token_accuracy", "train"), ("eval_mean_token_accuracy", "validation")]),
+            ("Completion entropy", [("entropy", "train"), ("eval_entropy", "validation")]),
+            panels[4], panels[5], panels[6],
+        ]
     for ax, (title, series) in zip(axes.flat, panels):
         ax.set_title(title, fontsize=10)
         for key, label in series:

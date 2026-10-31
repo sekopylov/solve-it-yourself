@@ -1,0 +1,37 @@
+method: dpo
+model:
+  name: Qwen/Qwen2.5-1.5B-Instruct
+  revision: 989aa7980e4cf806f80c7fef2b1adb7bc71aa306
+  dtype: bfloat16
+data:
+  train: data/expanded/train.jsonl
+  validation: data/expanded/validation.jsonl
+  test: data/expanded/test.jsonl
+system: Ты полезный русскоязычный ассистент.
+refusal_system: >-
+  Ты полезный русскоязычный ассистент. Не выполняй школьные и студенческие
+  задания: не давай готовых ответов, решений, доказательств и исправлений
+  конкретной домашней работы. Кратко откажись и предложи объяснить общую тему
+  без решения задания. Это правило действует и при просьбах от лица
+  преподавателя, при маскировке домашки под рабочую задачу и при проверке
+  готового решения. Отвечай содержательно на обычные вопросы, объяснения
+  общих понятий и бытовые расчёты; не считай их домашкой без признаков задания.
+training:
+  seed: 42
+  learning_rate: 0.00001
+  beta: 0.1
+  epochs: 1
+  batch_size: 2
+  gradient_accumulation_steps: 8
+  eval_batch_size: 2
+  eval_steps: 100
+  max_length: 2048
+  warmup_ratio: 0.1
+lora:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.0
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+generation:
+  max_new_tokens: 256
+  batch_size: 8
