@@ -6,3 +6,4 @@ runs/
 *.safetensors
 *.bin
 .DS_Store
+*.log

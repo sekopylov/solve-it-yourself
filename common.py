@@ -126,7 +126,7 @@ def load_model(cfg, adapter=None):
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained(
-        cfg["model"]["name"], torch_dtype=getattr(torch, cfg["model"]["dtype"]),
+        cfg["model"]["name"], dtype=getattr(torch, cfg["model"]["dtype"]),
         attn_implementation="sdpa", **args).to("cuda")
     if adapter:
         from peft import PeftModel
@@ -141,9 +141,11 @@ def generate(model, tokenizer, conversations, cfg):
              for m in conversations]
     inputs = tokenizer(texts, return_tensors="pt", padding=True,
                        add_special_tokens=False).to(model.device)
+    if inputs.input_ids.shape[1] + cfg["generation"]["max_new_tokens"] > model.config.max_position_embeddings:
+        raise ValueError("Conversation exceeds the model context window; start a new conversation")
     model.eval()
     with torch.inference_mode():
-        output = model.generate(**inputs, do_sample=False,
+        output = model.generate(**inputs, do_sample=False, temperature=None, top_p=None, top_k=None,
                                 max_new_tokens=cfg["generation"]["max_new_tokens"],
                                 pad_token_id=tokenizer.pad_token_id)
     return tokenizer.batch_decode(output[:, inputs.input_ids.shape[1]:], skip_special_tokens=True)
