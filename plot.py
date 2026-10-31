@@ -8,7 +8,11 @@ from common import config, read_jsonl
 
 def save(fig, path):
     for extension in ("png", "svg"):
-        fig.savefig(path.with_suffix("." + extension), dpi=180, bbox_inches="tight")
+        destination = path.with_suffix("." + extension)
+        options = {"metadata": {"Date": None}} if extension == "svg" else {}
+        fig.savefig(destination, dpi=180, bbox_inches="tight", **options)
+        if extension == "svg":
+            destination.write_text("\n".join(line.rstrip() for line in destination.read_text().splitlines()) + "\n")
 
 
 def training(run, out):
@@ -86,6 +90,21 @@ def behavior(path, out, name, cfg):
         ax.spines[["top", "right"]].set_visible(False)
     save(fig, out / name)
     plt.close(fig)
+    fig, ax = plt.subplots(figsize=(8, 4), layout="constrained")
+    fig.suptitle(f"{name.capitalize()} · {cfg['model']['name']} · answer length\n"
+                 "Source: saved decoded answers, re-tokenized without special tokens", fontsize=11)
+    for offset, category, color in ((-.18, "homework", "#387AB4"), (.18, "ordinary", "#D88825")):
+        ax.bar([i + offset for i in range(len(variants))],
+               [metrics[v]["mean_answer_tokens"].get(category, 0) for v in variants],
+               width=.35, color=color, label=category)
+    ax.set_xticks(range(len(variants)), variants, rotation=20, ha="right")
+    ax.set_ylabel("Mean tokens per response")
+    ax.grid(axis="y", alpha=.2)
+    ax.set_axisbelow(True)
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.legend()
+    save(fig, out / f"{name}-length")
+    plt.close(fig)
 
 
 def main():
@@ -101,7 +120,7 @@ def main():
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    plt.rcParams.update({"font.size": 9, "svg.fonttype": "none"})
+    plt.rcParams.update({"font.size": 9, "svg.fonttype": "none", "svg.hashsalt": "solve-it-yourself"})
     args.out.mkdir(parents=True, exist_ok=True)
     if args.run:
         training(args.run, args.out)
