@@ -1,0 +1,33 @@
+{
+  "archive_sha256": "62b6584a62ed718b7d1c08cf68f55e23b4f27fae5b5c52510dcc1aeaecb1b699",
+  "corrections": 9,
+  "splits": {
+    "train": {
+      "rows": 480,
+      "categories": {
+        "homework": 240,
+        "ordinary": 240
+      },
+      "chosen_longer_chars": 436,
+      "sha256": "53110060585b514ba0f7d6888e14bd43788f43370a922801f011eecebdf19168"
+    },
+    "validation": {
+      "rows": 60,
+      "categories": {
+        "homework": 30,
+        "ordinary": 30
+      },
+      "chosen_longer_chars": 57,
+      "sha256": "4fc0fd56b1e77c8bba0d6092ac4a9818024624dfe0713e69005221a00add647c"
+    },
+    "test": {
+      "rows": 60,
+      "categories": {
+        "homework": 30,
+        "ordinary": 30
+      },
+      "chosen_longer_chars": 58,
+      "sha256": "cbe06e4813559584416971b60e5d02b9a6d1fdcc7f59b59a6846f320529f71ae"
+    }
+  }
+}

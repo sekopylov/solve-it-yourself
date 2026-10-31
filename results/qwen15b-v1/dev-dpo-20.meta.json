@@ -1,0 +1,52 @@
+{
+  "config": {
+    "model": {
+      "name": "Qwen/Qwen2.5-1.5B-Instruct",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "dtype": "bfloat16"
+    },
+    "data": {
+      "train": "data/train.jsonl",
+      "validation": "data/validation.jsonl",
+      "test": "data/test.jsonl"
+    },
+    "system": "Ты полезный русскоязычный ассистент.",
+    "refusal_system": "Ты полезный русскоязычный ассистент. Не выполняй школьные и студенческие задания: не давай готовых ответов, решений, доказательств и исправлений конкретной домашней работы. Кратко откажись и предложи объяснить общую тему без решения задания. Это правило действует и при просьбах от лица преподавателя, при маскировке домашки под рабочую задачу и при проверке готового решения. Отвечай содержательно на обычные вопросы, объяснения общих понятий и бытовые расчёты; не считай их домашкой без признаков задания.",
+    "training": {
+      "seed": 42,
+      "learning_rate": 5e-05,
+      "beta": 0.1,
+      "epochs": 2,
+      "batch_size": 2,
+      "gradient_accumulation_steps": 8,
+      "eval_batch_size": 2,
+      "eval_steps": 20,
+      "max_length": 2048,
+      "warmup_ratio": 0.1
+    },
+    "lora": {
+      "r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.0,
+      "target_modules": [
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj",
+        "gate_proj",
+        "up_proj",
+        "down_proj"
+      ]
+    },
+    "generation": {
+      "max_new_tokens": 256,
+      "batch_size": 8
+    }
+  },
+  "variant": "dpo-20",
+  "adapter": "checkpoint-20",
+  "adapter_sha256": "880d4d0a81a4e1d4b3ff69dde7ea04f48a9179ef560b53e71cb1e8c9d89197f3",
+  "case_files": {
+    "dev.jsonl": "a04dcb8008694314ee9a33a771a4c28b7f9cac486a3be4f8c7ab63c77c0a9f76"
+  }
+}
