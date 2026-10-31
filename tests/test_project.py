@@ -1,4 +1,5 @@
 import copy
+import json
 import math
 import unittest
 from types import SimpleNamespace
@@ -11,7 +12,10 @@ class DataTests(unittest.TestCase):
     def test_frozen_splits(self):
         rows = {s: read_jsonl(f"data/{s}.jsonl") for s in ("train", "validation", "test")}
         validate_splits(rows)
-        self.assertEqual([len(x) for x in rows.values()], [480, 60, 60])
+        with open("data/manifest.json") as f:
+            manifest = json.load(f)
+        self.assertEqual({s: len(x) for s, x in rows.items()},
+                         {s: x["rows"] for s, x in manifest["splits"].items()})
 
     def test_leaking_group_is_rejected(self):
         train = read_jsonl("data/train.jsonl")[:1]

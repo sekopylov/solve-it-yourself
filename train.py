@@ -30,11 +30,16 @@ def main():
     set_seed(settings["seed"])
     splits = {s: read_jsonl(path) for s, path in cfg["data"].items()}
     validate_splits(splits)
+    for rows in splits.values():
+        for row in rows:
+            row["prompt"] = [{"role": "system", "content": cfg["system"]}] + [
+                m for m in row["prompt"] if m["role"] != "system"]
     train, validation = splits["train"], splits["validation"]
     if args.smoke:
         train = train[:8] + train[-8:]
         validation = validation[:2] + validation[-2:]
     model, tokenizer = load_model(cfg)
+    model.config.use_cache = False
     # Fail before optimization if TRL would truncate any training/validation completion.
     lengths = []
     for row in train + validation:
