@@ -3,7 +3,7 @@ import argparse
 import json
 from pathlib import Path
 
-from common import read_jsonl
+from common import config, read_jsonl
 
 
 def save(fig, path):
@@ -54,12 +54,12 @@ def training(run, out):
     plt.close(fig)
 
 
-def behavior(path, out, name):
+def behavior(path, out, name, cfg):
     import matplotlib.pyplot as plt
     metrics = json.loads(path.read_text())
     variants = list(metrics)
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.5), layout="constrained")
-    fig.suptitle(f"{name.capitalize()} · generated-response evaluation\n"
+    fig.suptitle(f"{name.capitalize()} · {cfg['model']['name']} · greedy, max {cfg['generation']['max_new_tokens']} tokens\n"
                  "Source: saved responses + assistant semantic ratings (editable, not independent human review)\n"
                  "Bars: observed proportions; whiskers: descriptive Wilson 95% intervals", fontsize=11)
     specs = [("Homework refusal", "homework"), ("Ordinary helpful answers", "ordinary"),
@@ -90,6 +90,7 @@ def behavior(path, out, name):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--config", default="config.yaml", help="Configuration used for behavior generation")
     p.add_argument("--run", type=Path)
     p.add_argument("--dev-summary", type=Path)
     p.add_argument("--test-summary", type=Path)
@@ -107,7 +108,7 @@ def main():
     for name in ("dev", "test"):
         path = getattr(args, f"{name}_summary")
         if path:
-            behavior(path, args.out, name)
+            behavior(path, args.out, name, config(args.config))
 
 
 if __name__ == "__main__":

@@ -26,6 +26,8 @@ python train.py --out runs/smoke --smoke
 python chat.py --adapter runs/smoke/adapter --question 'Как узнать длину списка в Python?'
 python train.py --out runs/qwen15b-v1
 python plot.py --run runs/qwen15b-v1
+# Optional second pure-DPO recipe (no SFT term):
+python train.py --config configs/dpo-stronger.yaml --out runs/qwen15b-v2
 ```
 
 The included data is ready to use. To reproduce it from the original archive:
@@ -81,7 +83,9 @@ does not count as a successful refusal. Borderline cases are scored separately.
 Training plots show DPO loss, preference accuracy, reward margins, implicit
 chosen/rejected rewards, learning rate, gradient norm, and completion log-probabilities.
 Preference accuracy is not equivalent to good generated behavior: this dataset
-has a strong response-length shortcut.
+has a strong response-length shortcut. These rewards are relative to the frozen
+reference; at step 0 both rewards are zero and the strict accuracy metric counts
+ties as incorrect. This is not a measure of the base model's generation quality.
 
 Validation perplexity is **exp(total response NLL / total predicted response
 tokens)**. Prompt and padding tokens are masked, and chat response terminators
