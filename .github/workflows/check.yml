@@ -10,5 +10,7 @@ jobs:
           python-version: '3.11'
       - run: pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu
       - run: python prepare.py
+      - run: python prepare_expanded.py
+      - run: python prepare_expanded.py --language all --out data/mixed
       - run: python -m unittest discover -s tests -v
-      - run: python -m compileall -q common.py prepare.py train.py evaluate.py chat.py plot.py
+      - run: python -m compileall -q common.py prepare.py prepare_expanded.py train.py evaluate.py chat.py plot.py

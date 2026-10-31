@@ -1,0 +1,78 @@
+{
+  "archive_sha256": "10c84763dc72c3b5f7e2e83e600d11552594e9b5dab4c514fd643acd2fc97f42",
+  "input_pairs": 6000,
+  "language": "ru",
+  "corrections": [
+    "O-6920c3fe-c429-4f99-8c6a-293203bd1c2a",
+    "O-8de5b158-2b55-44a8-8317-6b065e18a830",
+    "O-10005189-3553-46c8-98ac-ffa30c95e938",
+    "O-3318676c-3d50-44ad-83fa-4c3b79e11048",
+    "O-26ddd043-cf1c-4ba8-bcbd-aa487422d595",
+    "O-0e50f04d-317e-468a-86f3-e9339fe22381",
+    "O-54bbe268-9cf5-42fb-9c78-6623b69ca186",
+    "O-5fd7389b-8cb2-4129-a95b-2e767feb98b4",
+    "O-9220b36e-785e-4d1b-ac36-82adca8df2db"
+  ],
+  "exclusions": [
+    {
+      "id": "A03470",
+      "reason": "Chosen recipe has placeholder dessert name and ingredient list; it is not a usable flour-free recipe.",
+      "assessor": "assistant"
+    },
+    {
+      "id": "A22565",
+      "reason": "Chosen answer is entirely placeholders for the dish, ingredients and cooking process.",
+      "assessor": "assistant"
+    },
+    {
+      "id": "A23786",
+      "reason": "Chosen answer leaves the dish, ingredients and all recipe steps as placeholders.",
+      "assessor": "assistant"
+    },
+    {
+      "id": "RA-01175",
+      "reason": "Conservative exclusion: claims precise browser flag behavior and complete tracking control without reliable support; configuration claims were not independently verified.",
+      "assessor": "assistant"
+    },
+    {
+      "id": "RA-00845",
+      "reason": "Conservative exclusion: confidently equates the ambiguous phrase 'хищный торт' with Devil's Food Cake without support or clarification.",
+      "assessor": "assistant"
+    }
+  ],
+  "splits": {
+    "train": {
+      "rows": 4225,
+      "sha256": "317c848acaf5334442df39e6b86834dfabe3d531d98682315bd057e2078f9bd0",
+      "categories": {
+        "homework": 2115,
+        "ordinary": 2110
+      },
+      "languages": {
+        "ru": 4225
+      }
+    },
+    "validation": {
+      "rows": 235,
+      "sha256": "27ae42106d6178ca8b04507ea5cbb90e774b65a28dc1ef080a4996d8a5c615d3",
+      "categories": {
+        "homework": 118,
+        "ordinary": 117
+      },
+      "languages": {
+        "ru": 235
+      }
+    },
+    "test": {
+      "rows": 235,
+      "sha256": "142821bb89b0b90085dbb7658a0b9d13420468c5cd947857fb6cfff32c3f7d43",
+      "categories": {
+        "homework": 117,
+        "ordinary": 118
+      },
+      "languages": {
+        "ru": 235
+      }
+    }
+  }
+}

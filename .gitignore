@@ -7,3 +7,5 @@ runs/
 *.bin
 .DS_Store
 *.log
+data/expanded/
+data/mixed/

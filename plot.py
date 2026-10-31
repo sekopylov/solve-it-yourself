@@ -21,10 +21,13 @@ def training(run, out):
     ppl = read_jsonl(run / "perplexity.jsonl")
     meta = json.loads((run / "run.json").read_text())
     cfg = meta["config"]
-    fig, axes = plt.subplots(2, 4, figsize=(14, 7), layout="constrained")
-    fig.suptitle(f"DPO training · {cfg['model']['name']}\n"
+    method = meta.get("method", "dpo")
+    columns = 3 if method == "sft" else 4
+    fig, axes = plt.subplots(2, columns, figsize=(3.5 * columns, 7), layout="constrained")
+    beta = f"beta={cfg['training']['beta']} · " if method == "dpo" else ""
+    fig.suptitle(f"{method.upper()} training · {cfg['model']['name']}\n"
                  f"LoRA r={cfg['lora']['r']} · lr={cfg['training']['learning_rate']:g} · "
-                 f"beta={cfg['training']['beta']} · seed={cfg['training']['seed']}\n"
+                 f"{beta}seed={cfg['training']['seed']}\n"
                  f"Source: {run}/history.jsonl + perplexity.jsonl (response-only NLL)", fontsize=12)
 
     def line(ax, rows, key, label):
@@ -43,6 +46,13 @@ def training(run, out):
         ("Gradient norm", [("grad_norm", "norm")]),
         ("Validation completion log-probability", [("eval_logps/chosen", "chosen"), ("eval_logps/rejected", "rejected")]),
     ]
+    if method == "sft":
+        panels = [
+            ("Completion NLL", [("loss", "train"), ("eval_loss", "validation")]),
+            ("Completion token accuracy", [("mean_token_accuracy", "train"), ("eval_mean_token_accuracy", "validation")]),
+            ("Completion entropy", [("entropy", "train"), ("eval_entropy", "validation")]),
+            panels[4], panels[5], panels[6],
+        ]
     for ax, (title, series) in zip(axes.flat, panels):
         ax.set_title(title, fontsize=10)
         for key, label in series:
@@ -56,6 +66,23 @@ def training(run, out):
         ax.legend(fontsize=8)
     save(fig, out / "training")
     plt.close(fig)
+    languages = sorted({key.split("_")[1] for row in ppl for key in row
+                        if key.startswith("ppl_") and key.endswith("_ordinary") and key.count("_") == 2})
+    if languages:
+        fig, axes = plt.subplots(1, 2, figsize=(10, 4), layout="constrained")
+        fig.suptitle(f"{method.upper()} · {cfg['model']['name']} · validation PPL by language\n"
+                     f"Source: {run}/perplexity.jsonl · response-only, token-weighted NLL", fontsize=11)
+        for ax, category in zip(axes, ("ordinary", "refusal")):
+            for language in languages:
+                line(ax, ppl, f"ppl_{language}_{category}", language)
+            ax.set_title(f"{category.capitalize()} responses")
+            ax.set_xlabel("Optimizer step")
+            ax.set_ylabel("Perplexity")
+            ax.grid(alpha=.2)
+            ax.spines[["top", "right"]].set_visible(False)
+            ax.legend()
+        save(fig, out / "perplexity-language")
+        plt.close(fig)
 
 
 def behavior(path, out, name, cfg):
@@ -66,13 +93,15 @@ def behavior(path, out, name, cfg):
     fig.suptitle(f"{name.capitalize()} · {cfg['model']['name']} · greedy, max {cfg['generation']['max_new_tokens']} tokens\n"
                  f"Source: {path} · assistant ratings (not independent human review)\n"
                  "Bars: observed proportions; whiskers: descriptive Wilson 95% intervals", fontsize=11)
-    specs = [("Homework refusal", "homework"), ("Ordinary helpful answers", "ordinary"),
-             ("Attack success ↓", "attack_success")]
+    last = (("Attack success ↓", "attack_success")
+            if any(m["attack_success"]["n"] for m in metrics.values())
+            else ("Ordinary overrefusal ↓", "ordinary_overrefusal"))
+    specs = [("Homework refusal", "homework"), ("Ordinary helpful answers", "ordinary"), last]
     colors = ["#607D8B", "#D88825", "#387AB4", "#31947A", "#9562A8"]
     for ax, (title, key) in zip(axes, specs):
         for i, variant in enumerate(variants):
             m = metrics[variant]
-            metric = m[key] if key == "attack_success" else m["categories"].get(key)
+            metric = m[key] if key in m else m["categories"].get(key)
             if not metric or not metric["n"]:
                 continue
             value = metric["rate"]

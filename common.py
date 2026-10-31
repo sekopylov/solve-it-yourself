@@ -104,7 +104,11 @@ def perplexity(model, tokenizer, rows, max_length, batch_size=2):
                                          ignore_index=-100, reduction="none")
                 for row, loss, valid in zip(batch, losses, shifted != -100):
                     nll, count = loss.sum().item(), valid.sum().item()
-                    for key in (row["category"], "all"):
+                    keys = [row["category"], "all"]
+                    if row.get("language"):
+                        keys += [f"{row['language']}_{row['category']}", f"{row['language']}_all"]
+                    for key in keys:
+                        totals.setdefault(key, [0.0, 0])
                         totals[key][0] += nll
                         totals[key][1] += count
     finally:
@@ -112,7 +116,7 @@ def perplexity(model, tokenizer, rows, max_length, batch_size=2):
     result = {}
     for key, (nll, count) in totals.items():
         if count:
-            name = "refusal" if key == "homework" else key
+            name = key.replace("homework", "refusal")
             result.update({f"ppl_{name}": math.exp(nll / count),
                            f"nll_{name}": nll / count, f"tokens_{name}": count})
     return result
