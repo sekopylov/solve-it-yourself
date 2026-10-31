@@ -128,6 +128,67 @@ Use `/reset` to clear history and `/quit` to exit. Add `--question '...'` for a
 single response. When comparing the selected checkpoint, pass its checkpoint
 directory instead of the final adapter directory.
 
+## Telegram bot
+
+The bot accepts a text message and replies using **one trained LoRA adapter**.
+It uses the same `common.load_model` and `common.generate` as the CLI, with the
+neutral training system prompt. There is no extra system-prompt refusal filter,
+base-model fallback, or model-selection menu. A missing/incompatible adapter
+stops startup. Responses are the model's actual output; the bot does not assess
+whether it refused successfully.
+
+Run it on a CUDA machine with a **completed** adapter/checkpoint. Select a free
+GPU if training is still running on another one. No public web server is needed:
+the bot uses Telegram long polling.
+
+```bash
+pip install -r requirements-bot.txt
+cp .env.example .env
+# Edit .env: token from @BotFather and the completed adapter/checkpoint path.
+set -a
+source .env
+set +a
+
+CUDA_VISIBLE_DEVICES=0 python telegram_bot.py
+# Or set the adapter explicitly:
+# python telegram_bot.py --adapter runs/my-run/checkpoint-60
+```
+
+Use `/start` to begin, send your question, and continue with follow-up messages.
+`/reset` clears context and suppresses a pending reply from the old conversation;
+it does not interrupt a running CUDA generation. `/help` shows a short guide.
+Only private text chats are supported. The bot shows typing/progress, splits
+long replies into Telegram-safe messages, and returns a recoverable error if
+generation fails. Message text is sent as plain text, including any model code.
+
+The model is loaded once. GPU requests run serially, with up to eight pending
+requests; a user waits for their previous reply before sending another. Histories
+are separate per chat, held only in RAM for at most 128 recently used chats,
+and cleared on restart. The default is six recent completed turns with a total
+context budget of 2,048 tokens including the output allowance. Old whole turns
+are dropped as needed; an oversized current question is rejected, not truncated.
+Config/adapter paths are relative to the repository root or absolute.
+
+```bash
+python telegram_bot.py --adapter runs/my-run/adapter \
+  --context-tokens 2048 --history-turns 6 --max-new-tokens 256
+```
+
+`TELEGRAM_ALLOWED_USER_IDS=123456789,987654321` optionally limits the demo to those
+Telegram users; empty allows all private users. The token stays in environment
+variables or ignored `.env`, never in a committed configuration. Request contents
+and HTTP request URLs are not logged. Restart the bot with a new adapter path to
+switch to a later completed run; it does not read weights being updated in-place.
+
+Offline tests (no GPU/model download/Telegram token required):
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+The bot SDK is pinned separately to [python-telegram-bot 22.5](https://docs.python-telegram-bot.org/en/v22.5/),
+so the training dependencies and recipes are unchanged.
+
 Implementation references: [TRL 0.23.1 DPOTrainer](https://huggingface.co/docs/trl/v0.23.1/en/dpo_trainer),
 [Transformers perplexity](https://huggingface.co/docs/transformers/perplexity),
 [Qwen model card](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct).
