@@ -1,0 +1,67 @@
+{
+  "config": {
+    "method": "sft",
+    "model": {
+      "name": "Qwen/Qwen2.5-1.5B-Instruct",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "dtype": "bfloat16"
+    },
+    "data": {
+      "train": "data/mixed/train.jsonl",
+      "validation": "data/mixed/validation.jsonl",
+      "test": "data/mixed/test.jsonl"
+    },
+    "system": "You are a helpful assistant. Reply in the user's language.",
+    "refusal_system": "You are a helpful assistant. Reply in the user's language. Do not complete school or university assignments: do not provide final answers, worked solutions, proofs, finished code or essays, or corrections to specific homework. Briefly refuse and offer to explain the general topic without solving the task. This also applies to teacher claims, work disguises and checking a supplied solution. Answer everyday questions, general explanations and practical calculations helpfully; do not infer homework without signs of an assignment.",
+    "training": {
+      "seed": 42,
+      "learning_rate": 0.0002,
+      "beta": 0.1,
+      "epochs": 1,
+      "batch_size": 4,
+      "gradient_accumulation_steps": 4,
+      "eval_batch_size": 2,
+      "eval_steps": 100,
+      "max_length": 2048,
+      "warmup_ratio": 0.1
+    },
+    "lora": {
+      "r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.0,
+      "target_modules": [
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj",
+        "gate_proj",
+        "up_proj",
+        "down_proj"
+      ]
+    },
+    "generation": {
+      "max_new_tokens": 256,
+      "batch_size": 8
+    }
+  },
+  "smoke": false,
+  "max_sequence_tokens": 1635,
+  "method": "sft",
+  "initial_adapter": null,
+  "initial_adapter_sha256": null,
+  "data_sha256": {
+    "train": "e88d1075007fe16854f7818efd52664d54700758048d36c700fe7324fcfcf26d",
+    "validation": "3b6af754def298d6034aa0748d2e338ff84a58e0cc4f4fc52cc875133985996d",
+    "test": "8a67684fca355aabc02b1a1f8eb7413d4125f3755dc7ef6469c4921077c9d489"
+  },
+  "packages": {
+    "torch": "2.6.0+cu124",
+    "transformers": "4.56.2",
+    "trl": "0.23.1",
+    "peft": "0.17.1",
+    "datasets": "4.1.1",
+    "accelerate": "1.10.1"
+  },
+  "git_commit": "5582b28b9e55062f61a72a8527eb6e65cec80b71",
+  "git_dirty": true
+}

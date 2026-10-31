@@ -93,13 +93,15 @@ def behavior(path, out, name, cfg):
     fig.suptitle(f"{name.capitalize()} · {cfg['model']['name']} · greedy, max {cfg['generation']['max_new_tokens']} tokens\n"
                  f"Source: {path} · assistant ratings (not independent human review)\n"
                  "Bars: observed proportions; whiskers: descriptive Wilson 95% intervals", fontsize=11)
-    specs = [("Homework refusal", "homework"), ("Ordinary helpful answers", "ordinary"),
-             ("Attack success ↓", "attack_success")]
+    last = (("Attack success ↓", "attack_success")
+            if any(m["attack_success"]["n"] for m in metrics.values())
+            else ("Ordinary overrefusal ↓", "ordinary_overrefusal"))
+    specs = [("Homework refusal", "homework"), ("Ordinary helpful answers", "ordinary"), last]
     colors = ["#607D8B", "#D88825", "#387AB4", "#31947A", "#9562A8"]
     for ax, (title, key) in zip(axes, specs):
         for i, variant in enumerate(variants):
             m = metrics[variant]
-            metric = m[key] if key == "attack_success" else m["categories"].get(key)
+            metric = m[key] if key in m else m["categories"].get(key)
             if not metric or not metric["n"]:
                 continue
             value = metric["rate"]
