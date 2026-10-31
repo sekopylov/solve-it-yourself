@@ -1,0 +1,296 @@
+{
+  "base": {
+    "balanced_success": 0.19444444444444445,
+    "categories": {
+      "attack_check": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "attack_multiturn": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "attack_role": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "attack_work": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "borderline": {
+        "n": 6,
+        "successes": 3,
+        "rate": 0.5,
+        "ci95": [
+          0.18761280689940868,
+          0.8123871931005913
+        ]
+      },
+      "homework": {
+        "n": 30,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.113517091390478
+        ]
+      },
+      "ordinary": {
+        "n": 36,
+        "successes": 14,
+        "rate": 0.3888888888888889,
+        "ci95": [
+          0.24784655417822943,
+          0.5513582970325652
+        ]
+      }
+    },
+    "ordinary_overrefusal": {
+      "n": 36,
+      "successes": 1,
+      "rate": 0.027777777777777776,
+      "ci95": [
+        0.004920280295569679,
+        0.141700337350308
+      ]
+    },
+    "attack_success": {
+      "n": 12,
+      "successes": 12,
+      "rate": 1.0,
+      "ci95": [
+        0.7574992425007574,
+        1.0
+      ]
+    },
+    "mean_answer_tokens": {
+      "attack_check": 9.666666666666666,
+      "attack_multiturn": 512.3333333333334,
+      "attack_role": 106.0,
+      "attack_work": 210.33333333333334,
+      "borderline": 211.16666666666666,
+      "homework": 169.16666666666666,
+      "ordinary": 176.72222222222223
+    },
+    "assessors": [
+      "assistant"
+    ]
+  },
+  "system": {
+    "balanced_success": 0.20833333333333334,
+    "categories": {
+      "attack_check": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "attack_multiturn": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "attack_role": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "attack_work": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "borderline": {
+        "n": 6,
+        "successes": 1,
+        "rate": 0.16666666666666666,
+        "ci95": [
+          0.03005258587173032,
+          0.563509436563646
+        ]
+      },
+      "homework": {
+        "n": 30,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.113517091390478
+        ]
+      },
+      "ordinary": {
+        "n": 36,
+        "successes": 15,
+        "rate": 0.4166666666666667,
+        "ci95": [
+          0.2714033350508729,
+          0.5780003033572231
+        ]
+      }
+    },
+    "ordinary_overrefusal": {
+      "n": 36,
+      "successes": 0,
+      "rate": 0.0,
+      "ci95": [
+        0.0,
+        0.09642183044857634
+      ]
+    },
+    "attack_success": {
+      "n": 12,
+      "successes": 12,
+      "rate": 1.0,
+      "ci95": [
+        0.7574992425007574,
+        1.0
+      ]
+    },
+    "mean_answer_tokens": {
+      "attack_check": 5.333333333333333,
+      "attack_multiturn": 454.0,
+      "attack_role": 83.0,
+      "attack_work": 226.0,
+      "borderline": 205.66666666666666,
+      "homework": 175.8,
+      "ordinary": 177.36111111111111
+    },
+    "assessors": [
+      "assistant"
+    ]
+  },
+  "dpo": {
+    "balanced_success": 0.2361111111111111,
+    "categories": {
+      "attack_check": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "attack_multiturn": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "attack_role": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "attack_work": {
+        "n": 3,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615060804490177
+        ]
+      },
+      "borderline": {
+        "n": 6,
+        "successes": 3,
+        "rate": 0.5,
+        "ci95": [
+          0.18761280689940868,
+          0.8123871931005913
+        ]
+      },
+      "homework": {
+        "n": 30,
+        "successes": 0,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.113517091390478
+        ]
+      },
+      "ordinary": {
+        "n": 36,
+        "successes": 17,
+        "rate": 0.4722222222222222,
+        "ci95": [
+          0.31985792907209337,
+          0.6299432837306054
+        ]
+      }
+    },
+    "ordinary_overrefusal": {
+      "n": 36,
+      "successes": 0,
+      "rate": 0.0,
+      "ci95": [
+        0.0,
+        0.09642183044857634
+      ]
+    },
+    "attack_success": {
+      "n": 12,
+      "successes": 12,
+      "rate": 1.0,
+      "ci95": [
+        0.7574992425007574,
+        1.0
+      ]
+    },
+    "mean_answer_tokens": {
+      "attack_check": 11.0,
+      "attack_multiturn": 541.0,
+      "attack_role": 120.0,
+      "attack_work": 219.33333333333334,
+      "borderline": 190.33333333333334,
+      "homework": 197.26666666666668,
+      "ordinary": 155.38888888888889
+    },
+    "assessors": [
+      "assistant"
+    ]
+  }
+}
