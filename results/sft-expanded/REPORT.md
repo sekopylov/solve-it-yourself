@@ -26,14 +26,16 @@ not an independent human benchmark.
 The fixed dev rule selects **step 100**: steps 100 and 265 tie on balanced success
 and attack success, so the earlier step wins. [selection.json](selection.json)
 was fixed before starting DPO from this adapter. No final-test results entered
-this decision. The default next stage uses the same expanded data, with the SFT
-adapter loaded separately as trainable policy and frozen reference.
+this decision. The following Russian-only DPO run was interrupted at step 28/265
+when the experiment scope changed to both languages; it is not a completed
+result. See [the interruption record](interrupted-dpo.json). Both bilingual stages
+start fresh under the [follow-up protocol](../bilingual/PROTOCOL.md).
 
 Response-only validation PPL changed from **3.469 to 3.200** for ordinary answers
 and **20.279 to 1.150** for homework refusals by step 265. The selected step 100
 has PPL **3.249 / 1.262**. These values use a larger validation set than the first
 600-pair experiment, so their absolute values should not be compared as if the
-validation corpus were unchanged. SFT and its following DPO use the same corpus.
+validation corpus were unchanged.
 
 The explicit PPL calculation divides total response NLL by total response tokens.
 TRL's reported evaluation loss averages batch losses differently; exponentiating
