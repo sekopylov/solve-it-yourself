@@ -4,7 +4,7 @@ import math
 import unittest
 from types import SimpleNamespace
 
-from common import completion_tokens, perplexity, read_jsonl, validate_splits
+from common import completion_texts, completion_tokens, perplexity, read_jsonl, validate_splits
 from evaluate import proportion, summarize
 
 
@@ -28,6 +28,8 @@ class DataTests(unittest.TestCase):
 
 class Tokenizer:
     pad_token_id = 0
+    eos_token = "!"
+    eos_token_id = 2
 
     def apply_chat_template(self, messages, tokenize, add_generation_prompt):
         # Explicit role delimiter, plus EOS after the assistant response.
@@ -40,6 +42,24 @@ class Tokenizer:
 
 
 class PPLTests(unittest.TestCase):
+    def test_chat_end_and_trailing_newline_are_not_duplicated(self):
+        class NewlineTokenizer(Tokenizer):
+            def apply_chat_template(self, messages, tokenize, add_generation_prompt):
+                text = super().apply_chat_template(messages, tokenize, add_generation_prompt)
+                return text if add_generation_prompt else text + "\n"
+        tokenizer = NewlineTokenizer()
+        prompt = [{"role": "user", "content": "a"}]
+        answer = [{"role": "assistant", "content": "bb"}]
+        self.assertEqual(completion_texts(tokenizer, prompt, answer), ("a|", "bb"))
+        ids, labels = completion_tokens(tokenizer, prompt, answer, 5)
+        self.assertEqual(ids, [1, 2, 1, 1, 2])
+        self.assertEqual(labels, [-100, -100, 1, 1, 2])
+
+    def test_embedded_stop_token_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "EOS before its end"):
+            completion_tokens(Tokenizer(), [{"role": "user", "content": "a"}],
+                              [{"role": "assistant", "content": "b!b"}], 20)
+
     def test_prompt_mask_and_length(self):
         ids, labels = completion_tokens(Tokenizer(), [{"role": "user", "content": "aaaa"}],
                                         [{"role": "assistant", "content": "bb"}], 20)

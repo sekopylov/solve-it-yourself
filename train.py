@@ -5,7 +5,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from common import (completion_tokens, config, load_model, perplexity, read_jsonl,
+from common import (completion_texts, completion_tokens, config, load_model, perplexity, read_jsonl,
                     sha256, validate_splits, write_json, write_jsonl)
 
 
@@ -47,6 +47,7 @@ def main():
             ids, _ = completion_tokens(tokenizer, row["prompt"], row[key], settings["max_length"])
             lengths.append(len(ids))
     metadata = {"config": cfg, "smoke": args.smoke, "max_sequence_tokens": max(lengths),
+                "completion_format": "single_eos",
                 "data_sha256": {s: sha256(path) for s, path in cfg["data"].items()},
                 "packages": {name: importlib.metadata.version(name) for name in
                              ("torch", "transformers", "trl", "peft", "datasets", "accelerate")},
@@ -67,7 +68,13 @@ def main():
 
     callback = PPLCallback()
     def dataset(rows):
-        return Dataset.from_list([{k: row[k] for k in ("prompt", "chosen", "rejected")} for row in rows])
+        records = []
+        for row in rows:
+            record = {}
+            for key in ("chosen", "rejected"):
+                record["prompt"], record[key] = completion_texts(tokenizer, row["prompt"], row[key])
+            records.append(record)
+        return Dataset.from_list(records)
     trainer = DPOTrainer(
         model=model, processing_class=tokenizer,
         train_dataset=dataset(train), eval_dataset=dataset(validation),
@@ -88,6 +95,14 @@ def main():
             logging_steps=1, report_to="none", save_total_limit=None,
             remove_unused_columns=False, disable_dropout=True,
         ), callbacks=[callback])
+    # Check actual TRL preprocessing, including the prompt mask, before optimization.
+    for rows, processed in ((train, trainer.train_dataset), (validation, trainer.eval_dataset)):
+        for row, encoded in zip(rows, processed):
+            for key in ("chosen", "rejected"):
+                ids, labels = completion_tokens(tokenizer, row["prompt"], row[key], settings["max_length"])
+                boundary = next(i for i, label in enumerate(labels) if label != -100)
+                if encoded["prompt_input_ids"] != ids[:boundary] or encoded[f"{key}_input_ids"] != ids[boundary:]:
+                    raise ValueError(f"TRL completion formatting differs from response PPL: {row['id']}")
     # Default PEFT reference is the frozen base with the adapter disabled.
     trainer.evaluate()  # step 0 DPO metrics and response-only PPL
     initial_history = list(trainer.state.log_history)
