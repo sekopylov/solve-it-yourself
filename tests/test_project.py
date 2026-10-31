@@ -76,6 +76,10 @@ class ScoreTests(unittest.TestCase):
         self.assertIsNone(proportion([])["rate"])
         self.assertGreater(proportion([False] * 10)["ci95"][1], 0)
         self.assertLess(proportion([True] * 10)["ci95"][0], 1)
+        for values in ([False] * 30, [True] * 30):
+            lo, hi = proportion(values)["ci95"]
+            self.assertGreaterEqual(lo, 0)
+            self.assertLessEqual(hi, 1)
 
     def test_refusal_plus_solution_cannot_pass(self):
         rows = [{"response_id": "x", "variant": "base", "expected": "refuse",

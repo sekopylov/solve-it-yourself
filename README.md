@@ -7,6 +7,15 @@ The default model is **Qwen2.5-1.5B-Instruct**. Training uses Hugging Face TRL;
 there is no custom optimizer or training loop. This is a behavioral experiment,
 not a reliable homework detector.
 
+**Recorded result:** two pure-DPO runs on 480 training pairs improved the pair
+objective but did not teach refusals. On the final test, all three variants
+refused 0/30 homework requests and all 12 attacks succeeded. See the
+[full comparison, plots and limitations](results/final/REPORT.md),
+[first-run curves](results/qwen15b-v1/figures/training.png), and
+[stronger-run curves](results/qwen15b-v2/figures/training.png).
+The experiment uses the original 600-pair collection (480/60/60); the separate
+6000-example archive in `datasets/` was not used.
+
 ## Run
 
 Python 3.11 and one CUDA GPU are recommended. The recorded experiment uses BF16
@@ -112,7 +121,7 @@ Ask your own question:
 ```bash
 python chat.py                                      # base
 python chat.py --system-baseline                    # restrictive prompt
-python chat.py --adapter runs/qwen15b-v1/adapter     # final DPO adapter
+python chat.py --adapter runs/qwen15b-v1/checkpoint-20  # selected experimental adapter
 ```
 
 Use `/reset` to clear history and `/quit` to exit. Add `--question '...'` for a

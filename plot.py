@@ -25,7 +25,7 @@ def training(run, out):
     fig.suptitle(f"DPO training · {cfg['model']['name']}\n"
                  f"LoRA r={cfg['lora']['r']} · lr={cfg['training']['learning_rate']:g} · "
                  f"beta={cfg['training']['beta']} · seed={cfg['training']['seed']}\n"
-                 "Source: saved TRL logs and token-weighted response-only validation NLL", fontsize=12)
+                 f"Source: {run}/history.jsonl + perplexity.jsonl (response-only NLL)", fontsize=12)
 
     def line(ax, rows, key, label):
         points = [(r["step"], r[key]) for r in rows if key in r]
@@ -64,7 +64,7 @@ def behavior(path, out, name, cfg):
     variants = list(metrics)
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.5), layout="constrained")
     fig.suptitle(f"{name.capitalize()} · {cfg['model']['name']} · greedy, max {cfg['generation']['max_new_tokens']} tokens\n"
-                 "Source: saved responses + assistant semantic ratings (editable, not independent human review)\n"
+                 f"Source: {path} · assistant ratings (not independent human review)\n"
                  "Bars: observed proportions; whiskers: descriptive Wilson 95% intervals", fontsize=11)
     specs = [("Homework refusal", "homework"), ("Ordinary helpful answers", "ordinary"),
              ("Attack success ↓", "attack_success")]
@@ -92,7 +92,7 @@ def behavior(path, out, name, cfg):
     plt.close(fig)
     fig, ax = plt.subplots(figsize=(8, 4), layout="constrained")
     fig.suptitle(f"{name.capitalize()} · {cfg['model']['name']} · answer length\n"
-                 "Source: saved decoded answers, re-tokenized without special tokens", fontsize=11)
+                 f"Source: {path} · decoded answers re-tokenized without special tokens", fontsize=10)
     for offset, category, color in ((-.18, "homework", "#387AB4"), (.18, "ordinary", "#D88825")):
         ax.bar([i + offset for i in range(len(variants))],
                [metrics[v]["mean_answer_tokens"].get(category, 0) for v in variants],
