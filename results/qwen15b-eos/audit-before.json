@@ -1,0 +1,298 @@
+{
+  "encoding": {
+    "completions": 1080,
+    "prompt_matches_generation": 1080,
+    "equals_natural_chat_plus_one_eos": 1080,
+    "max_actual_length": 572,
+    "example_tail": "ания.<|im_end|>\n<|im_end|>"
+  },
+  "checkpoints": {
+    "v1-20": {
+      "sha256": "880d4d0a81a4e1d4b3ff69dde7ea04f48a9179ef560b53e71cb1e8c9d89197f3",
+      "step": 20,
+      "epoch": 0.6666666666666666,
+      "nonzero_lora_B": 196,
+      "lora_B_tensors": 196,
+      "metrics": {
+        "eval_loss": 0.14591379463672638,
+        "eval_rewards/chosen": 1.5387802124023438,
+        "eval_rewards/rejected": -1.5683739185333252,
+        "eval_rewards/accuracies": 0.949999988079071,
+        "eval_logps/chosen": -183.39195251464844,
+        "eval_logps/rejected": -104.07093811035156
+      },
+      "by_category": {
+        "homework": {
+          "chosen": {
+            "reward": 1.3479513041178386,
+            "extra_eos_reward": 0.7327284049987792,
+            "first": -6.639252456029256
+          },
+          "rejected": {
+            "reward": -2.194291070302327,
+            "extra_eos_reward": -1.4421310393015543,
+            "first": -6.669159468015035
+          }
+        },
+        "ordinary": {
+          "chosen": {
+            "reward": 1.729879468282064,
+            "extra_eos_reward": 1.3268800719579061,
+            "first": -2.7982448977728684
+          },
+          "rejected": {
+            "reward": -0.9423474121093751,
+            "extra_eos_reward": -0.09158585548400877,
+            "first": -8.231578222910564
+          }
+        }
+      },
+      "manual_mean_logps": {
+        "chosen": -183.38128554026287,
+        "rejected": -104.06785729726155
+      },
+      "extra_eos_analysis": {
+        "all": {
+          "n": 60,
+          "mean_margin": 3.1072346274058025,
+          "mean_extra_eos_margin": 1.7966626858711243,
+          "extra_eos_share_of_mean_margin": 0.578219188864775,
+          "pair_accuracy": 0.95,
+          "pair_accuracy_without_extra_eos": 0.95
+        },
+        "homework": {
+          "n": 30,
+          "mean_margin": 3.5422423744201663,
+          "mean_extra_eos_margin": 2.174859444300334,
+          "extra_eos_share_of_mean_margin": 0.6139781568889225,
+          "pair_accuracy": 0.9333333333333333,
+          "pair_accuracy_without_extra_eos": 0.9
+        },
+        "ordinary": {
+          "n": 30,
+          "mean_margin": 2.672226880391439,
+          "mean_extra_eos_margin": 1.4184659274419151,
+          "extra_eos_share_of_mean_margin": 0.5308179248740034,
+          "pair_accuracy": 0.9666666666666667,
+          "pair_accuracy_without_extra_eos": 1.0
+        }
+      }
+    },
+    "v1-60": {
+      "sha256": "7802dc390853772dd8cfaba2fc26b1b6a20dc9154df31b7d0bda6cacfcd713d1",
+      "step": 60,
+      "epoch": 2.0,
+      "nonzero_lora_B": 196,
+      "lora_B_tensors": 196,
+      "metrics": {
+        "eval_loss": 0.08249048888683319,
+        "eval_rewards/chosen": 2.0977303981781006,
+        "eval_rewards/rejected": -2.685946464538574,
+        "eval_rewards/accuracies": 0.9666666388511658,
+        "eval_logps/chosen": -177.8024444580078,
+        "eval_logps/rejected": -115.24666595458984
+      },
+      "by_category": {
+        "homework": {
+          "chosen": {
+            "reward": 2.4600543467203777,
+            "extra_eos_reward": 1.632091162999471,
+            "first": -6.3872740268707275
+          },
+          "rejected": {
+            "reward": -3.782595602671305,
+            "extra_eos_reward": -2.4004718478520712,
+            "first": -7.5387507994969685
+          }
+        },
+        "ordinary": {
+          "chosen": {
+            "reward": 1.7357771301269531,
+            "extra_eos_reward": 1.387065151532491,
+            "first": -2.908298924006522
+          },
+          "rejected": {
+            "reward": -1.5891607411702475,
+            "extra_eos_reward": -0.2594285170237223,
+            "first": -8.229132270812988
+          }
+        }
+      },
+      "manual_mean_logps": {
+        "chosen": -177.79128201802573,
+        "rejected": -115.2434466044108
+      },
+      "extra_eos_analysis": {
+        "all": {
+          "n": 60,
+          "mean_margin": 4.783793910344442,
+          "mean_extra_eos_margin": 2.8395283397038784,
+          "extra_eos_share_of_mean_margin": 0.5935724642242014,
+          "pair_accuracy": 0.9666666666666667,
+          "pair_accuracy_without_extra_eos": 0.9833333333333333
+        },
+        "homework": {
+          "n": 30,
+          "mean_margin": 6.2426499493916845,
+          "mean_extra_eos_margin": 4.032563010851543,
+          "extra_eos_share_of_mean_margin": 0.6459697473898078,
+          "pair_accuracy": 0.9666666666666667,
+          "pair_accuracy_without_extra_eos": 0.9666666666666667
+        },
+        "ordinary": {
+          "n": 30,
+          "mean_margin": 3.324937871297201,
+          "mean_extra_eos_margin": 1.6464936685562133,
+          "extra_eos_share_of_mean_margin": 0.4951953186162379,
+          "pair_accuracy": 0.9666666666666667,
+          "pair_accuracy_without_extra_eos": 1.0
+        }
+      }
+    },
+    "v2-120": {
+      "sha256": "8c1870d1dbca78238a2b13c54a73b98902877c55d8aba73c07bd17796bcda026",
+      "step": 120,
+      "epoch": 4.0,
+      "nonzero_lora_B": 196,
+      "lora_B_tensors": 196,
+      "metrics": {
+        "eval_loss": 0.003688251134008169,
+        "eval_rewards/chosen": -2.0530600547790527,
+        "eval_rewards/rejected": -11.469118118286133,
+        "eval_rewards/accuracies": 1.0,
+        "eval_logps/chosen": -239.84092712402344,
+        "eval_logps/rejected": -317.76953125
+      },
+      "by_category": {
+        "homework": {
+          "chosen": {
+            "reward": -1.410353914896647,
+            "extra_eos_reward": -0.9797918319702151,
+            "first": -9.585838743050893
+          },
+          "rejected": {
+            "reward": -11.317265679041547,
+            "extra_eos_reward": -2.645312496821085,
+            "first": -20.183639558156333
+          }
+        },
+        "ordinary": {
+          "chosen": {
+            "reward": -2.6957956822713216,
+            "extra_eos_reward": -0.8921794764200848,
+            "first": -7.255852741341126
+          },
+          "rejected": {
+            "reward": -11.621028594970705,
+            "extra_eos_reward": -1.5934895801544187,
+            "first": -15.068352715174358
+          }
+        }
+      },
+      "manual_mean_logps": {
+        "chosen": -239.83193537394206,
+        "rejected": -317.7676076253255
+      },
+      "extra_eos_analysis": {
+        "all": {
+          "n": 60,
+          "mean_margin": 9.416072338422138,
+          "mean_extra_eos_margin": 1.1834153842926025,
+          "extra_eos_share_of_mean_margin": 0.12568036244408343,
+          "pair_accuracy": 1.0,
+          "pair_accuracy_without_extra_eos": 1.0
+        },
+        "homework": {
+          "n": 30,
+          "mean_margin": 9.906911764144896,
+          "mean_extra_eos_margin": 1.6655206648508711,
+          "extra_eos_share_of_mean_margin": 0.1681170383366818,
+          "pair_accuracy": 1.0,
+          "pair_accuracy_without_extra_eos": 1.0
+        },
+        "ordinary": {
+          "n": 30,
+          "mean_margin": 8.925232912699384,
+          "mean_extra_eos_margin": 0.7013101037343344,
+          "extra_eos_share_of_mean_margin": 0.07857611230923355,
+          "pair_accuracy": 1.0,
+          "pair_accuracy_without_extra_eos": 1.0
+        }
+      }
+    }
+  },
+  "manual_reference_mean": {
+    "chosen": -198.77043940226238,
+    "rejected": -88.38466488520304
+  },
+  "reference_max_change": 0.0,
+  "generation_prefix_check": [
+    {
+      "id": "dev-01",
+      "prefix": "Давайте решим эту задачу пошагово:\n\n1) Сначала у нас есть уравнение:\n   7x + ",
+      "matches_saved_prefix": true
+    },
+    {
+      "id": "dev-02",
+      "prefix": "В романе \"Обломов\" Ивана Григорьевича Обломова, главный герой романа, присутств",
+      "matches_saved_prefix": true
+    },
+    {
+      "id": "dev-03",
+      "prefix": "Для расчета ускорения можно использовать формулу:\n\n\\[ a = \\frac{F}{m} \\]\n\nгде \\(a\\) — это у",
+      "matches_saved_prefix": true
+    },
+    {
+      "id": "dev-04",
+      "prefix": "Yesterday she went home.",
+      "matches_saved_prefix": true
+    },
+    {
+      "id": "dev-05",
+      "prefix": "Конечно! Вот пример функции, которая создает и выводит на экран связный список:\n\n```python\nclass Node:\n    def __init__(",
+      "matches_saved_prefix": true
+    },
+    {
+      "id": "dev-06",
+      "prefix": "Площадь прямоугольника равна произведению его длинных сторон. В данном случае, площадь прямоугольника со сторонами",
+      "matches_saved_prefix": true
+    },
+    {
+      "id": "dev-07",
+      "prefix": "Для доказательства, что сумма углов треугольника равна 180°, можно использовать следующие шаги:\n\n",
+      "matches_saved_prefix": true
+    },
+    {
+      "id": "dev-08",
+      "prefix": "Фазы митоза в правильном порядке следуют так:\n\n1. Диплоидная клетка делится.\n2. С",
+      "matches_saved_prefix": true
+    }
+  ],
+  "scope": "Read-only audit of saved pure-DPO checkpoints. No optimizer steps or weight changes. EOS attribution is observational, not a corrected-training ablation.",
+  "optimizer_check": {
+    "qwen15b-v1/20": {
+      "optimizer_parameter_states": 392,
+      "optimizer_steps": [
+        20
+      ]
+    },
+    "qwen15b-v1/60": {
+      "optimizer_parameter_states": 392,
+      "optimizer_steps": [
+        60
+      ]
+    },
+    "qwen15b-v2/120": {
+      "optimizer_parameter_states": 392,
+      "optimizer_steps": [
+        120
+      ]
+    }
+  },
+  "finding": "TRL 0.23.1 appends EOS after the Qwen chat template already emitted im_end and a newline. All 1080 train/validation completions contain this post-stop EOS. Its contribution is large in the first run, but corrected training has not been tested.",
+  "important_limit": "Removing the extra EOS from scoring existing weights leaves pair accuracy high; EOS contamination does not alone explain all failure, and this audit is not a causal retraining comparison.",
+  "source_commits": {
+    "v1": "1371b74d67bc50dc58779466d4b637468cbceae5",
+    "v2": "9affab57f51a4dbf1606009aad32890e3f41d67c"
+  }
+}

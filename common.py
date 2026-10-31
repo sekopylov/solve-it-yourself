@@ -60,15 +60,31 @@ def validate_splits(splits):
                 index[key] = split
 
 
-def completion_tokens(tokenizer, prompt, completion, max_length):
-    """Mask the prompt, retaining only completion tokens (including chat EOS)."""
+def completion_texts(tokenizer, prompt, completion):
+    """Render a generation prompt and response body; TRL adds the single EOS."""
     prefix = tokenizer.apply_chat_template(prompt, tokenize=False, add_generation_prompt=True)
     full = tokenizer.apply_chat_template(prompt + completion, tokenize=False,
                                          add_generation_prompt=False)
+    if not full.startswith(prefix):
+        raise ValueError("Chat template is not prefix-compatible")
+    response = full[len(prefix):].rstrip()
+    eos = tokenizer.eos_token
+    if not eos or not response.endswith(eos):
+        raise ValueError("Chat template must end its response with tokenizer.eos_token")
+    response = response[:-len(eos)]
+    if eos in response:
+        raise ValueError("Completion contains an EOS before its end")
+    return prefix, response
+
+
+def completion_tokens(tokenizer, prompt, completion, max_length):
+    """Mask the prompt; score the response through its first and only EOS."""
+    prefix, response = completion_texts(tokenizer, prompt, completion)
     prefix_ids = tokenizer(prefix, add_special_tokens=False)["input_ids"]
-    ids = tokenizer(full, add_special_tokens=False)["input_ids"]
-    if not full.startswith(prefix) or ids[:len(prefix_ids)] != prefix_ids:
-        raise ValueError("Chat template is not prefix-compatible; adapt masking for this model")
+    response_ids = tokenizer(response, add_special_tokens=False)["input_ids"]
+    if tokenizer(prefix + response, add_special_tokens=False)["input_ids"] != prefix_ids + response_ids:
+        raise ValueError("Tokenization merges across the prompt/response boundary")
+    ids = prefix_ids + response_ids + [tokenizer.eos_token_id]
     if len(ids) > max_length:
         raise ValueError(f"Sequence has {len(ids)} tokens, above max_length={max_length}; "
                          "increase the limit or explicitly curate the example")
