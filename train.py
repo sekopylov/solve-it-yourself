@@ -41,10 +41,12 @@ def main():
                 m for m in row["prompt"] if m["role"] != "system"]
     train, validation = splits["train"], splits["validation"]
     if args.smoke:
-        train = [r for category in ("homework", "ordinary")
-                 for r in [x for x in train if x["category"] == category][:8]]
-        validation = [r for category in ("homework", "ordinary")
-                      for r in [x for x in validation if x["category"] == category][:2]]
+        def small_sample(rows, size):
+            strata = sorted({(r["category"], r.get("language", "")) for r in rows})
+            return [r for category, language in strata for r in
+                    [x for x in rows if (x["category"], x.get("language", "")) == (category, language)]
+                    [:max(1, size // len(strata))]]
+        train, validation = small_sample(train, 16), small_sample(validation, 4)
     model, tokenizer = load_model(cfg)
     lora = LoraConfig(task_type="CAUSAL_LM", bias="none", **cfg["lora"])
     reference_parameters = {}

@@ -66,6 +66,23 @@ def training(run, out):
         ax.legend(fontsize=8)
     save(fig, out / "training")
     plt.close(fig)
+    languages = sorted({key.split("_")[1] for row in ppl for key in row
+                        if key.startswith("ppl_") and key.endswith("_ordinary") and key.count("_") == 2})
+    if languages:
+        fig, axes = plt.subplots(1, 2, figsize=(10, 4), layout="constrained")
+        fig.suptitle(f"{method.upper()} · {cfg['model']['name']} · validation PPL by language\n"
+                     f"Source: {run}/perplexity.jsonl · response-only, token-weighted NLL", fontsize=11)
+        for ax, category in zip(axes, ("ordinary", "refusal")):
+            for language in languages:
+                line(ax, ppl, f"ppl_{language}_{category}", language)
+            ax.set_title(f"{category.capitalize()} responses")
+            ax.set_xlabel("Optimizer step")
+            ax.set_ylabel("Perplexity")
+            ax.grid(alpha=.2)
+            ax.spines[["top", "right"]].set_visible(False)
+            ax.legend()
+        save(fig, out / "perplexity-language")
+        plt.close(fig)
 
 
 def behavior(path, out, name, cfg):

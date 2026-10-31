@@ -1,0 +1,9 @@
+{
+  "status": "interrupted",
+  "reason": "User selected both languages; replacing Russian-only follow-up with fresh bilingual SFT and DPO.",
+  "last_logged_step": 28,
+  "planned_steps": 265,
+  "config": "configs/dpo-expanded.yaml",
+  "initial_adapter": "runs/sft-expanded/checkpoint-100",
+  "included_in_final_comparison": false
+}

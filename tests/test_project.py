@@ -58,7 +58,8 @@ class PPLTests(unittest.TestCase):
                 logits = torch.tensor([0.25, 0.5, 0.25]).log().expand(*input_ids.shape, 3)
                 return SimpleNamespace(logits=logits)
 
-        rows = [{"category": category, "prompt": [{"role": "user", "content": prompt}],
+        rows = [{"category": category, "language": "ru" if category == "ordinary" else "en",
+                 "prompt": [{"role": "user", "content": prompt}],
                  "chosen": [{"role": "assistant", "content": response}]}
                 for category, prompt, response in (("ordinary", "aaaaa", "b"),
                                                     ("homework", "a", "bbb"))]
@@ -66,6 +67,10 @@ class PPLTests(unittest.TestCase):
         result = perplexity(model, Tokenizer(), rows, 20, 2)
         self.assertEqual(result["tokens_ordinary"], 2)
         self.assertEqual(result["tokens_refusal"], 4)
+        self.assertEqual(result["tokens_ru_ordinary"], 2)
+        self.assertEqual(result["tokens_en_refusal"], 4)
+        self.assertAlmostEqual(result["ppl_ru_ordinary"], result["ppl_ordinary"])
+        self.assertAlmostEqual(result["ppl_en_refusal"], result["ppl_refusal"])
         self.assertAlmostEqual(result["ppl_ordinary"], math.sqrt(8), places=5)
         self.assertAlmostEqual(result["ppl_all"], math.exp((4 * math.log(2) + 2 * math.log(4)) / 6), places=5)
         self.assertTrue(model.training)

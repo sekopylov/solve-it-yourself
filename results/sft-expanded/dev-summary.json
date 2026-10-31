@@ -1,0 +1,266 @@
+{
+  "sft-100": {
+    "balanced_success": 0.5625,
+    "categories": {
+      "attack_check": {
+        "n": 2,
+        "successes": 2,
+        "rate": 1.0,
+        "ci95": [
+          0.34237195288961925,
+          1.0
+        ]
+      },
+      "attack_multiturn": {
+        "n": 2,
+        "successes": 1,
+        "rate": 0.5,
+        "ci95": [
+          0.09452865480086614,
+          0.9054713451991339
+        ]
+      },
+      "attack_role": {
+        "n": 2,
+        "successes": 2,
+        "rate": 1.0,
+        "ci95": [
+          0.34237195288961925,
+          1.0
+        ]
+      },
+      "attack_work": {
+        "n": 2,
+        "successes": 2,
+        "rate": 1.0,
+        "ci95": [
+          0.34237195288961925,
+          1.0
+        ]
+      },
+      "homework": {
+        "n": 8,
+        "successes": 6,
+        "rate": 0.75,
+        "ci95": [
+          0.40926987910258916,
+          0.9285223111419724
+        ]
+      },
+      "ordinary": {
+        "n": 8,
+        "successes": 3,
+        "rate": 0.375,
+        "ci95": [
+          0.13684175946152105,
+          0.6942621454161981
+        ]
+      }
+    },
+    "ordinary_overrefusal": {
+      "n": 8,
+      "successes": 2,
+      "rate": 0.25,
+      "ci95": [
+        0.07147768885802763,
+        0.5907301208974108
+      ]
+    },
+    "attack_success": {
+      "n": 8,
+      "successes": 1,
+      "rate": 0.125,
+      "ci95": [
+        0.02241690886329617,
+        0.4708948057698615
+      ]
+    },
+    "mean_answer_tokens": {
+      "attack_check": 11.0,
+      "attack_multiturn": 172.0,
+      "attack_role": 29.0,
+      "attack_work": 11.0,
+      "homework": 50.875,
+      "ordinary": 90.625
+    },
+    "assessors": [
+      "assistant"
+    ]
+  },
+  "sft-200": {
+    "balanced_success": 0.5,
+    "categories": {
+      "attack_check": {
+        "n": 2,
+        "successes": 2,
+        "rate": 1.0,
+        "ci95": [
+          0.34237195288961925,
+          1.0
+        ]
+      },
+      "attack_multiturn": {
+        "n": 2,
+        "successes": 1,
+        "rate": 0.5,
+        "ci95": [
+          0.09452865480086614,
+          0.9054713451991339
+        ]
+      },
+      "attack_role": {
+        "n": 2,
+        "successes": 2,
+        "rate": 1.0,
+        "ci95": [
+          0.34237195288961925,
+          1.0
+        ]
+      },
+      "attack_work": {
+        "n": 2,
+        "successes": 2,
+        "rate": 1.0,
+        "ci95": [
+          0.34237195288961925,
+          1.0
+        ]
+      },
+      "homework": {
+        "n": 8,
+        "successes": 6,
+        "rate": 0.75,
+        "ci95": [
+          0.40926987910258916,
+          0.9285223111419724
+        ]
+      },
+      "ordinary": {
+        "n": 8,
+        "successes": 2,
+        "rate": 0.25,
+        "ci95": [
+          0.07147768885802763,
+          0.5907301208974108
+        ]
+      }
+    },
+    "ordinary_overrefusal": {
+      "n": 8,
+      "successes": 2,
+      "rate": 0.25,
+      "ci95": [
+        0.07147768885802763,
+        0.5907301208974108
+      ]
+    },
+    "attack_success": {
+      "n": 8,
+      "successes": 1,
+      "rate": 0.125,
+      "ci95": [
+        0.02241690886329617,
+        0.4708948057698615
+      ]
+    },
+    "mean_answer_tokens": {
+      "attack_check": 11.0,
+      "attack_multiturn": 305.5,
+      "attack_role": 12.0,
+      "attack_work": 11.0,
+      "homework": 67.75,
+      "ordinary": 120.625
+    },
+    "assessors": [
+      "assistant"
+    ]
+  },
+  "sft-265": {
+    "balanced_success": 0.5625,
+    "categories": {
+      "attack_check": {
+        "n": 2,
+        "successes": 2,
+        "rate": 1.0,
+        "ci95": [
+          0.34237195288961925,
+          1.0
+        ]
+      },
+      "attack_multiturn": {
+        "n": 2,
+        "successes": 1,
+        "rate": 0.5,
+        "ci95": [
+          0.09452865480086614,
+          0.9054713451991339
+        ]
+      },
+      "attack_role": {
+        "n": 2,
+        "successes": 2,
+        "rate": 1.0,
+        "ci95": [
+          0.34237195288961925,
+          1.0
+        ]
+      },
+      "attack_work": {
+        "n": 2,
+        "successes": 2,
+        "rate": 1.0,
+        "ci95": [
+          0.34237195288961925,
+          1.0
+        ]
+      },
+      "homework": {
+        "n": 8,
+        "successes": 6,
+        "rate": 0.75,
+        "ci95": [
+          0.40926987910258916,
+          0.9285223111419724
+        ]
+      },
+      "ordinary": {
+        "n": 8,
+        "successes": 3,
+        "rate": 0.375,
+        "ci95": [
+          0.13684175946152105,
+          0.6942621454161981
+        ]
+      }
+    },
+    "ordinary_overrefusal": {
+      "n": 8,
+      "successes": 2,
+      "rate": 0.25,
+      "ci95": [
+        0.07147768885802763,
+        0.5907301208974108
+      ]
+    },
+    "attack_success": {
+      "n": 8,
+      "successes": 1,
+      "rate": 0.125,
+      "ci95": [
+        0.02241690886329617,
+        0.4708948057698615
+      ]
+    },
+    "mean_answer_tokens": {
+      "attack_check": 11.0,
+      "attack_multiturn": 176.5,
+      "attack_role": 13.5,
+      "attack_work": 13.5,
+      "homework": 56.875,
+      "ordinary": 116.5
+    },
+    "assessors": [
+      "assistant"
+    ]
+  }
+}

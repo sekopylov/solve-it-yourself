@@ -47,7 +47,7 @@ def prepare(archive, destination, language="ru"):
         raise ValueError('Original 600 IDs were not preserved')
     validate_splits(splits)
     normalize = lambda text: ' '.join(text.casefold().split())
-    holdout = {normalize(t) for name in ('dev', 'challenge_test')
+    holdout = {normalize(t) for name in ('dev', 'dev-en', 'challenge_test')
                for r in read_jsonl(f'data/{name}.jsonl') for t in r['turns']}
     if any(normalize(r['prompt'][-1]['content']) in holdout for r in splits['train']):
         raise ValueError('Training prompt overlaps the frozen behavior suites')

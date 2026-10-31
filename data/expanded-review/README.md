@@ -41,3 +41,18 @@ Report this fresh subset separately from the already inspected original 84-case
 suite. Repeated results on the original suite are longitudinal comparisons,
 not a new untouched test. Neither test chooses checkpoints; the fixed dev rule
 remains in `results/RUBRIC.md`.
+
+The active follow-up uses **both languages** via `--language all --out data/mixed`:
+5395/300/300 pairs. `mixed-manifest.json` records those hashes. A Russian-only SFT
+control was completed before this choice; its following DPO was interrupted at
+step 28/265 and is not a completed result. Both bilingual stages start fresh
+under neutral language-compatible system instructions. Effective batch size
+remains 16 (microbatch 4, accumulation 4).
+
+`data/dev-en.jsonl` adds four homework, four ordinary and four attack cases to
+the existing 24-case dev suite. `data/expanded-test-en12.jsonl` adds six homework
+and six ordinary English examples sampled with seed 552 from the new test records.
+Its expected labels were screened before bilingual training. All expanded test
+subsets remain out of training and checkpoint selection; references are guidance,
+not independently verified answers. Final metrics should separate Russian and
+English, and distinguish repeated test prompts from the fresh held-out subsets.
